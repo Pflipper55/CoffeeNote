@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
         color: getWhiteSmoke(),
       ),
     ),
+    centerTitle: true,
   );
 
   Widget _buildMenu() => Container(
