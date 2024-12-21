@@ -28,36 +28,4 @@ class RecipeNote {
     required this.createdAt,
     required this.updatedAt,
   });
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'title': title,
-    'description': description,
-    'ingredients': ingredients.map((e) => e.toJson()).toList(),
-    'steps': steps,
-    'brewTime': brewTime,
-    'brewTemperature': brewTemperature,
-    'notes': notes,
-    'rating': rating,
-    'tags': tags,
-    'createdAt': createdAt.toIso8601String(),
-    'updatedAt': updatedAt.toIso8601String(),
-  };
-
-  factory RecipeNote.fromJson(Map<String, dynamic> json) => RecipeNote(
-    id: json['id'],
-    title: json['title'],
-    description: json['description'] ?? '',
-    ingredients: (json['ingredients'] as List)
-      .map((e) => Ingredient.fromJson(e))
-      .toList(),
-    steps: List<String>.from(json['steps'] ?? []),
-    brewTime: json['brewTime'] ?? 0,
-    brewTemperature: (json['brewTemperature'] ?? 0.0).toDouble(),
-    notes: json['notes'] ?? '',
-    rating: json['rating'] ?? 0,
-    tags: List<String>.from(json['tags'] ?? []),
-    createdAt: DateTime.parse(json['createdAt']),
-    updatedAt: DateTime.parse(json['updatedAt']),
-  );
 }
