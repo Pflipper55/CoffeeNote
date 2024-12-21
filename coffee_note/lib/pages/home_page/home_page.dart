@@ -2,10 +2,7 @@ import 'package:coffee_note/helpers/color_helper.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-
-  final String title;
-
+  const HomePage({super.key});
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -13,18 +10,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: getPrimaryColor(),
-        title: Text(
-          widget.title,
-          style: TextStyle(
-            color: getWhiteSmoke(),
-          ),
-        ),
-      ),
-      body: _homeGrid()
-    );
+    return _homeGrid();
   }
 
   Widget _homeGrid() => GridView.count(
@@ -44,6 +30,7 @@ class _HomePageState extends State<HomePage> {
     => GestureDetector(
       onTap: tapFunction,
       child: Card(
+        color: getWhiteSmoke(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
