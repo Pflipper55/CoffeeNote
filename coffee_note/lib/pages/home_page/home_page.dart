@@ -9,18 +9,45 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return _homeGrid();
+    return _homeColumn();
   }
 
-  Widget _homeGrid() => GridView.count(
-    padding: EdgeInsets.all(10),
-    crossAxisCount: 2,
-    crossAxisSpacing: 10,
-    mainAxisSpacing: 10,
-    children: _buildGrid()
+  Widget _homeColumn() => Column(
+    children: [
+      Row(
+        children: [
+          Text(
+            "Recent Notes",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.w200
+            ),
+          ),
+        ],
+      ),   
+      ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 200),
+        child: _buildCarousel(),
+      ),     
+    ],
   );
   
-  List<Widget> _buildGrid() => [];
+  _buildCarousel() => CarouselView(
+    scrollDirection: Axis.horizontal,
+    onTap: _openNote(), // ToDo Get Element
+    itemExtent: double.infinity,
+    children: _buildCarouselItems(),
+  );
+  
+  List<Widget> _buildCarouselItems() => [
+    Center(child: Text('Item 1')),
+    Center(child: Text('Item 2')),
+    Center(child: Text('Item 3')),
+  ];
+  
+  _openNote() {
 
-
+  }
+  
 }
