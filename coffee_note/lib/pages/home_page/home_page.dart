@@ -14,18 +14,21 @@ class _HomePageState extends State<HomePage> {
 
   Widget _homeColumn() => Column(
     children: [
-      Row(
-        children: [
-          Text(
-            "Recent Notes",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w200
+      Container(
+        margin: EdgeInsets.only(top: 20, left: 20),
+        child: Row(
+          children: [
+            Text(
+              "Recent Notes",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w200
+              ),
             ),
-          ),
-        ],
-      ),   
+          ],
+        ), 
+      ),       
       ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 200),
         child: _buildCarousel(),
