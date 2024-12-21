@@ -1,5 +1,5 @@
 import 'package:coffee_note/helpers/color_helper.dart';
-import 'package:coffee_note/pages/home_page/home_page.dart';
+import 'package:coffee_note/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {

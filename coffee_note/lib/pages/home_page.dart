@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   );
   
   _buildCarousel() => CarouselView(
+    itemSnapping: true,
     scrollDirection: Axis.horizontal,
     onTap: _openNote(), // ToDo Get Element
     itemExtent: double.infinity,
