@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
           appBar: _buildAppBar(),
           bottomNavigationBar: _buildMenu(),
           body: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               Container(), // ToDo Replace to AddPage
               HomePage(),
