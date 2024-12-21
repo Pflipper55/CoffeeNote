@@ -15,13 +15,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Coffee Notepad',
       home: DefaultTabController(
-        length: 1,
+        length: 3,
+        initialIndex: 1,
         child: Scaffold(
           appBar: _buildAppBar(),
           bottomNavigationBar: _buildMenu(),
           body: TabBarView(
             children: [
-              HomePage()
+              Container(), // ToDo Replace to AddPage
+              HomePage(),
+              Container() // ToDo Replace to SearchPage
             ]
           ),
         )
@@ -48,13 +51,32 @@ class MyApp extends StatelessWidget {
     padding: EdgeInsets.all(4),
     dividerColor: Colors.transparent,
     indicatorColor: Colors.white,
+    unselectedLabelColor: Colors.white,
+    labelColor: Colors.white,
     tabs: [
+      Tab(
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 30,
+        ),
+        text: "Add Note",
+      ),
       Tab(
         icon: Icon(
           Icons.home,
           color: Colors.white,
           size: 30,
         ),
+        text: "Home",
+      ),
+      Tab(
+        icon: Icon(
+          Icons.search,
+          color: Colors.white,
+          size: 30,
+        ),
+        text: "Search",
       )
     ]
   );
