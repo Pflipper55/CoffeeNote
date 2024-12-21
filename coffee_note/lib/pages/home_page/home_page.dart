@@ -21,39 +21,7 @@ class _HomePageState extends State<HomePage> {
     children: _buildGrid()
   );
   
-  List<Widget> _buildGrid() => [
-    _buildCardButton(Icons.add, getSecondaryColor(), "Add note", _navigateToAddPage),
-    _buildCardButton(Icons.search, getTaupeGray(), "See all notes", _navigateToSearchPage),
-  ];
-
-  Widget _buildCardButton(IconData icon, Color iconColor, String iconText, void Function() tapFunction) 
-    => GestureDetector(
-      onTap: tapFunction,
-      child: Card(
-        color: getWhiteSmoke(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: iconColor,
-              size: 50,
-            ),
-            Text(
-              iconText,
-              style: TextStyle(
-                fontSize: 20
-              ),
-            )
-          ],
-        ),
-      )
-    );
+  List<Widget> _buildGrid() => [];
 
 
-  void _navigateToAddPage() {
-  }
-
-  void _navigateToSearchPage() {
-  }
 }
