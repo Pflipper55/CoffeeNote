@@ -1,4 +1,3 @@
-import 'package:coffee_note/helpers/color_helper.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
