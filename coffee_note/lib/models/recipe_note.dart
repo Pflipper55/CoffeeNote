@@ -14,7 +14,7 @@ class RecipeNote {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  RecipeNote({
+  const RecipeNote({
     required this.id,
     required this.title,
     this.description = '',
