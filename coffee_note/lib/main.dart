@@ -1,4 +1,5 @@
 import 'package:coffee_note/helpers/color_helper.dart';
+import 'package:coffee_note/pages/add_page.dart';
 import 'package:coffee_note/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Coffee Notepad',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: getPrimaryColor())
+      ),
       home: DefaultTabController(
         length: 3,
         initialIndex: 1,
@@ -24,7 +28,7 @@ class MyApp extends StatelessWidget {
           body: TabBarView(
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              Container(), // ToDo Replace to AddPage
+              AddPage(), // ToDo Replace to AddPage
               HomePage(),
               Container() // ToDo Replace to SearchPage
             ]

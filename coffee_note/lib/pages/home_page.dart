@@ -1,4 +1,3 @@
-import 'package:coffee_note/helpers/color_helper.dart';
 import 'package:coffee_note/models/recipe_note.dart';
 import 'package:coffee_note/providers/recipe_notes_provider.dart';
 import 'package:flutter/material.dart';
