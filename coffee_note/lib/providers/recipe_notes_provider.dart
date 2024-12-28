@@ -1,5 +1,5 @@
 import 'package:coffee_note/models/recipe_note.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // ToDo: Remove
 final testDescription = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
@@ -28,4 +28,5 @@ List<RecipeNote> recentNotes = [
   ),
 ];
 
+@riverpod
 final recentNotesProvider = Provider((ref) => recentNotes);
