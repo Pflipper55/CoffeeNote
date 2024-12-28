@@ -1,5 +1,4 @@
-import 'package:coffee_note/models/ingredient.dart';
-import 'package:coffee_note/providers/ingredient_provider.dart';
+import 'package:coffee_note/models/ingredients/ingredient.dart';
 import 'package:coffee_note/providers/recipe_ingredient_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +13,16 @@ class _AddPageState extends ConsumerState<AddPage> {
   void initState() {
     super.initState();
   }
+
+  String recipeTitle =  "";
+  String recipeDescription = '';
+  List<Ingredient> recipeIngredients = [];
+  List<String> steps = [];
+  int brewTime = 0;
+  double brewTemperature = 0.0;
+  String notes = '';
+  int rating = 0;
+  List<String> tags = [];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -53,7 +62,9 @@ class _AddPageState extends ConsumerState<AddPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton.icon(
-                onPressed: _openIngredientModal,
+                onPressed: () {
+                  // ToDo show ingredient
+                },
                 icon: Icon(
                   Icons.add
                 ),
@@ -88,53 +99,4 @@ class _AddPageState extends ConsumerState<AddPage> {
     );
   }
 
-  Future<void> _openIngredientModal() async {
-    final allIngredients = ref.watch(allIngredientProvider);
-    final recipeIngredient = ref.watch(recipeIngredientNotifierProvider);
-    Map<int, bool> selectBoxItems = {
-      for(var item in allIngredients) item.id:false
-    };
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) =>
-          AlertDialog(
-            title: Text("Select Ingredients"),
-            content: ListView.builder(
-              key: UniqueKey(),
-              itemCount: selectBoxItems.length,
-              itemBuilder: (context, index) { 
-                final ingredient = allIngredients[index];
-                return CheckboxListTile(
-                  key: Key(ingredient.id.toString()),
-                  value: selectBoxItems[index],
-                  onChanged: (value) {
-                    setState(() {
-                      selectBoxItems[index] = value!;
-                    });
-                  },
-                  title: Text(allIngredients[index].name),
-                );
-              }
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Add")
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Cancel")
-              )
-            ],
-          ),
-        );
-      }
-    );
-  }
 }

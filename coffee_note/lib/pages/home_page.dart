@@ -1,4 +1,4 @@
-import 'package:coffee_note/models/recipe_note.dart';
+import 'package:coffee_note/models/recipes/recipe_note.dart';
 import 'package:coffee_note/providers/recipe_notes_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

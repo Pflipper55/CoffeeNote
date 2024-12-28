@@ -1,4 +1,4 @@
-import 'package:coffee_note/models/ingredient.dart';
+import 'package:coffee_note/models/ingredients/ingredient.dart';
 import 'package:const_date_time/const_date_time.dart';
 
 class RecipeNote {
@@ -10,7 +10,6 @@ class RecipeNote {
   final DateTime brewTime;
   final double brewTemperature; // In Celcius
   final String notes;
-  final int rating; // 1-5
   final List<String> tags;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -24,7 +23,6 @@ class RecipeNote {
     this.brewTime = const ConstDateTime(0),
     this.brewTemperature = 0.0,
     this.notes = '',
-    this.rating = 0,
     this.tags = const [],
     required this.createdAt,
     required this.updatedAt,
