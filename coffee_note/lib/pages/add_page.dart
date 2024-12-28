@@ -1,5 +1,6 @@
 import 'package:coffee_note/models/ingredient.dart';
-import 'package:coffee_note/providers/ingridient_provider.dart';
+import 'package:coffee_note/providers/ingredient_provider.dart';
+import 'package:coffee_note/providers/recipe_ingredient_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -89,6 +90,7 @@ class _AddPageState extends ConsumerState<AddPage> {
 
   Future<void> _openIngredientModal() async {
     final allIngredients = ref.watch(allIngredientProvider);
+    final recipeIngredient = ref.watch(recipeIngredientNotifierProvider);
     Map<int, bool> selectBoxItems = {
       for(var item in allIngredients) item.id:false
     };

@@ -1,6 +1,4 @@
 import 'package:coffee_note/models/ingredient.dart';
-import 'package:coffee_note/models/recipe_note.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // ToDo: Remove
