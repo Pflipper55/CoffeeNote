@@ -1,5 +1,6 @@
 import 'package:coffee_note/models/ingredients/ingredient.dart';
 import 'package:coffee_note/models/recipes/recipe_add_form_state.dart';
+import 'package:coffee_note/models/steps/recipe_step.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RecipeAddFormStateProvider extends Notifier<RecipeAddFormState> {
@@ -27,6 +28,30 @@ class RecipeAddFormStateProvider extends Notifier<RecipeAddFormState> {
     state = state.copyWith(
       ingredients: state.ingredients.map((ingredient) {
         return ingredient.id == updatedIngredient.id ? updatedIngredient : ingredient;
+      }).toList(),
+    );
+  }
+
+  void addStep(RecipeStep step) {
+    if(!state.steps.contains(step)){
+      state = state.copyWith(
+        steps: [...state.steps, step],
+      );
+    }
+  }
+
+  void removeStep(RecipeStep step) {
+    if(state.steps.contains(step)){
+      state = state.copyWith(
+        steps: state.steps.where((i) => i.id == step.id).toList(),
+      );
+    }
+  }
+
+  void updateStep(RecipeStep step) {
+    state = state.copyWith(
+      steps: state.steps.map((s) {
+        return s.id == step.id ? step : s;
       }).toList(),
     );
   }

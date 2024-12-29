@@ -1,10 +1,11 @@
 import 'package:coffee_note/models/ingredients/ingredient.dart';
+import 'package:coffee_note/models/steps/recipe_step.dart';
 
 class RecipeAddFormState {
   String title;
   String description;
   List<Ingredient> ingredients;
-  List<String> steps;
+  List<RecipeStep> steps;
   int brewTime;
   double brewTemperature;
   String notes;
@@ -23,7 +24,7 @@ class RecipeAddFormState {
     String? title,
     String? description,
     List<Ingredient>? ingredients,
-    List<String>? steps,
+    List<RecipeStep>? steps,
     int? brewTime,
     double? brewTemperature,
     String? notes,

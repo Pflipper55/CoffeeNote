@@ -1,9 +1,11 @@
 import 'package:coffee_note/misc/modals/ingredients/add_ingredient_modal.dart';
 import 'package:coffee_note/misc/modals/ingredients/remove_ingredient_modal.dart';
 import 'package:coffee_note/misc/modals/ingredients/update_ingredient_modal.dart';
+import 'package:coffee_note/misc/modals/recipe_steps/add_recipe_steps_modal.dart';
 import 'package:coffee_note/models/ingredients/ingredient.dart';
 import 'package:coffee_note/models/ingredients/ingredient_units.dart';
 import 'package:coffee_note/models/recipes/recipe_add_form_state.dart';
+import 'package:coffee_note/models/steps/recipe_step.dart';
 import 'package:coffee_note/providers/recipe_add_form_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,92 +35,150 @@ class _AddPageState extends ConsumerState<AddPage> {
   
   Widget _buildAddForm(RecipeAddFormState state) => Form(
     key: _formKey,
-    child: Padding(
-      padding: const EdgeInsets.only(left: 10.0, top: 8.0, right: 10.0),
-      child: Column(
-        children: [
-          TextFormField(
-            controller: titleController,
-            onChanged: (value) {
-              ref.watch(recipeIngredientNotifierProvider.notifier).updateTitle(titleController.text);
-            },
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              labelText: "Enter the title of the recipe"
+    child: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10.0, top: 8.0, right: 10.0),
+        child: Column(
+          children: [
+            TextFormField(
+              controller: titleController,
+              onChanged: (value) {
+                ref.watch(recipeIngredientNotifierProvider.notifier).updateTitle(titleController.text);
+              },
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                labelText: "Enter the title of the recipe"
+              ),
             ),
-          ),
-          SizedBox(height: 16),
-          TextFormField(
-            controller: descriptionController,
-            onChanged: (value) {
-              ref.watch(recipeIngredientNotifierProvider.notifier).updateDescription(descriptionController.text);
-            },
-            maxLines: 5,
-            maxLength: 120,
-            decoration: InputDecoration(
-              hintText: 'Description',
-              border: OutlineInputBorder(),
+            SizedBox(height: 16),
+            TextFormField(
+              controller: descriptionController,
+              onChanged: (value) {
+                ref.watch(recipeIngredientNotifierProvider.notifier).updateDescription(descriptionController.text);
+              },
+              maxLines: 5,
+              maxLength: 120,
+              decoration: InputDecoration(
+                hintText: 'Description',
+                border: OutlineInputBorder(),
+              ),
             ),
-          ),
-          SizedBox(height: 16),
-          Row(
-            children: [
-              Text(
-                "Ingredients",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-          SizedBox(
-            height: 100,
-            child: _buildIngredientListTile(state.ingredients)
-          ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,     
-            spacing: 8,   
-            children: [
-              Flexible(
-                flex: 1,
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    await showDialog(
-                      context: context,
-                      builder: (context) => AddIngredientModal(ref: ref)
-                    );
-                  },
-                  icon: Icon(
-                    Icons.add
-                  ),
-                  label: Text("Add Ingredient"),
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: ElevatedButton.icon(
-                  onPressed: ref.watch(recipeIngredientNotifierProvider).ingredients.isNotEmpty 
-                  ? () async {
-                    await showDialog(
-                      context: context,
-                      builder: (context) => RemoveIngredientModal(ref: ref)
-                    );
-                  }
-                  : null,
-                  icon: Icon(
-                    Icons.delete_outlined
-                  ),
-                  label: Text(
-                    "Delete Ingredient",
+            SizedBox(height: 16),
+            Row(
+              children: [
+                Text(
+                  "Ingredients",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
+              ],
+            ),
+            SizedBox(height: 16),
+            SizedBox(
+              height: 100,
+              child: _buildIngredientListTile(state.ingredients)
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,     
+              spacing: 8,   
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (context) => AddIngredientModal(ref: ref)
+                      );
+                    },
+                    icon: Icon(
+                      Icons.add
+                    ),
+                    label: Text("Add Ingredient"),
+                  ),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: ElevatedButton.icon(
+                    onPressed: ref.watch(recipeIngredientNotifierProvider).ingredients.isNotEmpty 
+                    ? () async {
+                      await showDialog(
+                        context: context,
+                        builder: (context) => RemoveIngredientModal(ref: ref)
+                      );
+                    }
+                    : null,
+                    icon: Icon(
+                      Icons.delete_outlined
+                    ),
+                    label: Text(
+                      "Delete Ingredient",
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Row(
+              children: [
+                Text(
+                  "Steps",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+                       SizedBox(
+              height: 100,
+              child: _buildStepListTile(state.steps)
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,     
+              spacing: 8,   
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (context) => AddRecipeStepsModal(ref: ref)
+                      );
+                    },
+                    icon: Icon(
+                      Icons.add
+                    ),
+                    label: Text("Add Step"),
+                  ),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: ElevatedButton.icon(
+                    onPressed: ref.watch(recipeIngredientNotifierProvider).steps.isNotEmpty 
+                    ? () async {
+                      await showDialog(
+                        context: context,
+                        builder: (context) => RemoveIngredientModal(ref: ref)
+                      );
+                    }
+                    : null,
+                    icon: Icon(
+                      Icons.delete_outlined
+                    ),
+                    label: Text(
+                      "Delete Step",
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     )
   );
@@ -152,4 +212,24 @@ class _AddPageState extends ConsumerState<AddPage> {
     );
   }
 
+  Widget _buildStepListTile(List<RecipeStep> steps)
+    => ListView.builder(
+      key: UniqueKey(),
+      itemCount: steps.length,
+      itemBuilder: (context, index) {
+        final item = steps[index];
+        return  Dismissible(
+          key: Key('$index'),
+          onDismissed: (direction) {
+            setState(() {
+              ref.watch(recipeIngredientNotifierProvider.notifier).removeStep(item);
+            });
+          },
+          background: Container(color: Colors.red,),
+          child: ListTile(
+            title: Text(item.description),     
+          )
+        );
+      },
+    );
 }

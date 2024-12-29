@@ -1,4 +1,5 @@
 import 'package:coffee_note/models/ingredients/ingredient.dart';
+import 'package:coffee_note/models/steps/recipe_step.dart';
 import 'package:const_date_time/const_date_time.dart';
 
 class RecipeNote {
@@ -6,7 +7,7 @@ class RecipeNote {
   final String title;
   final String description;
   final List<Ingredient> ingredients;
-  final List<String> steps;
+  final List<RecipeStep> steps;
   final DateTime brewTime;
   final double brewTemperature; // In Celcius
   final String notes;
