@@ -4,30 +4,34 @@ import 'package:coffee_note/providers/recipe_add_form_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddIngredientModal extends ConsumerStatefulWidget {
+class EditIngredientModal extends ConsumerStatefulWidget {
   final WidgetRef ref;
+  final Ingredient ingredient;
 
-  const AddIngredientModal({
-    Key? key,
+  const EditIngredientModal({
+    super.key,
+    required this.ingredient,
     required this.ref,
-  }) : super(key: key);
+  });
 
   @override
-  _AddIngredientModalState createState() => _AddIngredientModalState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _EditIngredientState();
 }
 
-class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
+class _EditIngredientState extends ConsumerState<EditIngredientModal> {
   late final TextEditingController nameController;
   late final TextEditingController amountController;
-  late final int id;
-  IngredientUnits selectedUnit = IngredientUnits.gram;
+  late IngredientUnits selectedUnit;
+  late int id;
 
   @override
   void initState() {
     super.initState();
-    id = widget.ref.read(recipeIngredientNotifierProvider.notifier).getNextIngredientId();
-    nameController = TextEditingController();
-    amountController = TextEditingController();
+    final ingredient = widget.ingredient;
+    id = ingredient.id;
+    selectedUnit = ingredient.unit;
+    nameController = TextEditingController(text: ingredient.name);
+    amountController = TextEditingController(text: ingredient.amount.toString());
   }
 
   @override
@@ -37,12 +41,12 @@ class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
     super.dispose();
   }
 
-  void _addIngredient(BuildContext context) {
+  void _updateIngredient(BuildContext context) {
     final name = nameController.text.trim();
     final amount = double.tryParse(amountController.text.trim()) ?? 0;
 
     if (name.isNotEmpty && amount > 0) {
-      final newIngredient = Ingredient(
+      final updatedIngredient = Ingredient(
         id: id,
         name: name,
         amount: amount,
@@ -51,7 +55,7 @@ class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
 
       widget.ref
           .read(recipeIngredientNotifierProvider.notifier)
-          .addIngredient(newIngredient);
+          .updateIngredient(updatedIngredient);
 
       Navigator.pop(context); // Close modal
     } else {
@@ -64,7 +68,7 @@ class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Add Ingredient"),
+      title: const Text("Edit Ingredient"),
       content: SingleChildScrollView(
         child: Column(
           children: [
@@ -89,8 +93,8 @@ class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
           child: const Text("Cancel"),
         ),
         ElevatedButton(
-          onPressed: () => _addIngredient(context),
-          child: const Text("Add Ingredient"),
+          onPressed: () => _updateIngredient(context),
+          child: const Text("Update Ingredient"),
         ),
       ],
     );

@@ -1,4 +1,5 @@
 import 'package:coffee_note/misc/modals/add_ingredient_modal.dart';
+import 'package:coffee_note/misc/modals/update_ingredient_modal.dart';
 import 'package:coffee_note/models/ingredients/ingredient.dart';
 import 'package:coffee_note/models/ingredients/ingredient_units.dart';
 import 'package:coffee_note/models/recipes/recipe_add_form_state.dart';
@@ -86,7 +87,10 @@ class _AddPageState extends ConsumerState<AddPage> {
                 flex: 1,
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    await showDialog(context: context, builder: (context) => AddIngredientModal(ref: ref));
+                    await showDialog(
+                      context: context,
+                      builder: (context) => AddIngredientModal(ref: ref)
+                    );
                   },
                   icon: Icon(
                     Icons.add
@@ -132,8 +136,11 @@ class _AddPageState extends ConsumerState<AddPage> {
           child: ListTile(
             title: Text(item.name),     
             subtitle: Text("${item.amount} ${item.unit.displayName}"),
-            onTap: () {
-              // show Edit modal
+            onTap: () async {
+              await showDialog(
+                context: context,
+                builder: (context) => EditIngredientModal(ref: ref, ingredient: item)
+              );
             },
           )
         );
