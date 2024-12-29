@@ -1,5 +1,8 @@
+import 'package:coffee_note/misc/modals/add_ingredient_modal.dart';
 import 'package:coffee_note/models/ingredients/ingredient.dart';
-import 'package:coffee_note/providers/recipe_ingredient_provider.dart';
+import 'package:coffee_note/models/ingredients/ingredient_units.dart';
+import 'package:coffee_note/models/recipes/recipe_add_form_state.dart';
+import 'package:coffee_note/providers/recipe_add_form_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,39 +12,49 @@ class AddPage extends ConsumerStatefulWidget {
 }
 
 class _AddPageState extends ConsumerState<AddPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  String recipeTitle =  "";
-  String recipeDescription = '';
-  List<Ingredient> recipeIngredients = [];
-  List<String> steps = [];
-  int brewTime = 0;
-  double brewTemperature = 0.0;
-  String notes = '';
-  int rating = 0;
-  List<String> tags = [];
-
+  RecipeAddFormState state = RecipeAddFormState();
   final _formKey = GlobalKey<FormState>();
 
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
+
+
   @override
-  Widget build(BuildContext context) => _buildAddForm();
+  Widget build(BuildContext context) {
+    state = ref.watch(recipeIngredientNotifierProvider);
+    titleController.text = state.title;
+    descriptionController.text = state.description;
+
+
+    return _buildAddForm(state);
+  }
   
-  Widget _buildAddForm() => Form(
+  Widget _buildAddForm(RecipeAddFormState state) => Form(
     key: _formKey,
     child: Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left: 10.0, top: 8.0, right: 10.0),
       child: Column(
         children: [
           TextFormField(
+            controller: titleController,
+            onChanged: (value) {
+              if(value != null) {
+                ref.watch(recipeIngredientNotifierProvider.notifier).updateTitle(titleController.text);
+              }
+            },
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               labelText: "Enter the title of the recipe"
             ),
           ),
+          SizedBox(height: 16),
           TextFormField(
+            controller: descriptionController,
+            onChanged: (value) {
+              if(value != null) {
+                ref.watch(recipeIngredientNotifierProvider.notifier).updateDescription(descriptionController.text);
+              }
+            },
             maxLines: 5,
             maxLength: 120,
             decoration: InputDecoration(
@@ -49,26 +62,51 @@ class _AddPageState extends ConsumerState<AddPage> {
               border: OutlineInputBorder(),
             ),
           ),
+          SizedBox(height: 16),
           Row(
             children: [
-              Text("Ingredients:"),
+              Text(
+                "Ingredients",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w300
+                ),
+              ),
             ],
           ),
           SizedBox(
             height: 100,
-            child: _buildIngredientListTile([])
+            child: _buildIngredientListTile(state.ingredients)
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,     
+            spacing: 8,   
             children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  // ToDo show ingredient
-                },
-                icon: Icon(
-                  Icons.add
+              Flexible(
+                flex: 1,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    await showDialog(context: context, builder: (context) => AddIngredientModal(ref: ref));
+                  },
+                  icon: Icon(
+                    Icons.add
+                  ),
+                  label: Text("Add Ingredient"),
                 ),
-                label: Text("Add Ingredients"),
+              ),
+              Flexible(
+                flex: 1,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    // ToDo Remove
+                  },
+                  icon: Icon(
+                    Icons.delete_outlined
+                  ),
+                  label: Text(
+                    "Delete Ingredient",
+                  ),
+                ),
               ),
             ],
           )
@@ -87,12 +125,16 @@ class _AddPageState extends ConsumerState<AddPage> {
           key: Key('$index'),
           onDismissed: (direction) {
             setState(() {
-              ingredients.removeAt(index);
+              ref.watch(recipeIngredientNotifierProvider.notifier).removeIngredient(item);
             });
           },
           background: Container(color: Colors.red,),
           child: ListTile(
-            title: Text(item.name),         
+            title: Text(item.name),     
+            subtitle: Text("${item.amount} ${item.unit.displayName}"),
+            onTap: () {
+              // show Edit modal
+            },
           )
         );
       },

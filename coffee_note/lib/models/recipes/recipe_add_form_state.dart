@@ -1,13 +1,13 @@
 import 'package:coffee_note/models/ingredients/ingredient.dart';
 
 class RecipeAddFormState {
-  final String title;
-  final String description;
-  final List<Ingredient> ingredients;
-  final List<String> steps;
-  final int brewTime;
-  final double brewTemperature;
-  final String notes;
+  String title;
+  String description;
+  List<Ingredient> ingredients;
+  List<String> steps;
+  int brewTime;
+  double brewTemperature;
+  String notes;
 
   RecipeAddFormState({
     this.title = '',

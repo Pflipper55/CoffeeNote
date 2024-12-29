@@ -10,7 +10,6 @@ class RecipeNote {
   final DateTime brewTime;
   final double brewTemperature; // In Celcius
   final String notes;
-  final List<String> tags;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -23,7 +22,6 @@ class RecipeNote {
     this.brewTime = const ConstDateTime(0),
     this.brewTemperature = 0.0,
     this.notes = '',
-    this.tags = const [],
     required this.createdAt,
     required this.updatedAt,
   });
