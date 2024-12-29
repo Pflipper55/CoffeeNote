@@ -1,5 +1,6 @@
-import 'package:coffee_note/misc/modals/add_ingredient_modal.dart';
-import 'package:coffee_note/misc/modals/update_ingredient_modal.dart';
+import 'package:coffee_note/misc/modals/ingredients/add_ingredient_modal.dart';
+import 'package:coffee_note/misc/modals/ingredients/remove_ingredient_modal.dart';
+import 'package:coffee_note/misc/modals/ingredients/update_ingredient_modal.dart';
 import 'package:coffee_note/models/ingredients/ingredient.dart';
 import 'package:coffee_note/models/ingredients/ingredient_units.dart';
 import 'package:coffee_note/models/recipes/recipe_add_form_state.dart';
@@ -39,9 +40,7 @@ class _AddPageState extends ConsumerState<AddPage> {
           TextFormField(
             controller: titleController,
             onChanged: (value) {
-              if(value != null) {
-                ref.watch(recipeIngredientNotifierProvider.notifier).updateTitle(titleController.text);
-              }
+              ref.watch(recipeIngredientNotifierProvider.notifier).updateTitle(titleController.text);
             },
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
@@ -52,9 +51,7 @@ class _AddPageState extends ConsumerState<AddPage> {
           TextFormField(
             controller: descriptionController,
             onChanged: (value) {
-              if(value != null) {
-                ref.watch(recipeIngredientNotifierProvider.notifier).updateDescription(descriptionController.text);
-              }
+              ref.watch(recipeIngredientNotifierProvider.notifier).updateDescription(descriptionController.text);
             },
             maxLines: 5,
             maxLength: 120,
@@ -101,9 +98,14 @@ class _AddPageState extends ConsumerState<AddPage> {
               Flexible(
                 flex: 1,
                 child: ElevatedButton.icon(
-                  onPressed: () async {
-                    // ToDo Remove
-                  },
+                  onPressed: ref.watch(recipeIngredientNotifierProvider).ingredients.isNotEmpty 
+                  ? () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => RemoveIngredientModal(ref: ref)
+                    );
+                  }
+                  : null,
                   icon: Icon(
                     Icons.delete_outlined
                   ),
