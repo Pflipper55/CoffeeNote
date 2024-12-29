@@ -8,9 +8,9 @@ class AddIngredientModal extends ConsumerStatefulWidget {
   final WidgetRef ref;
 
   const AddIngredientModal({
-    Key? key,
+    super.key,
     required this.ref,
-  }) : super(key: key);
+  });
 
   @override
   _AddIngredientModalState createState() => _AddIngredientModalState();
