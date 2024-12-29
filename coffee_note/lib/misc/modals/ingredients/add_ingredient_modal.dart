@@ -19,7 +19,7 @@ class AddIngredientModal extends ConsumerStatefulWidget {
 class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
   late final TextEditingController nameController;
   late final TextEditingController amountController;
-  late final int id;
+  late int id;
   IngredientUnits selectedUnit = IngredientUnits.gram;
 
   @override
@@ -28,6 +28,7 @@ class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
     id = widget.ref.read(recipeIngredientNotifierProvider.notifier).getNextIngredientId();
     nameController = TextEditingController();
     amountController = TextEditingController();
+    selectedUnit = IngredientUnits.gram;
   }
 
   @override
@@ -53,7 +54,13 @@ class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
           .read(recipeIngredientNotifierProvider.notifier)
           .addIngredient(newIngredient);
 
-      Navigator.pop(context); // Close modal
+      setState(() {
+        id = widget.ref.read(recipeIngredientNotifierProvider.notifier).getNextIngredientId();
+        nameController.text = "";
+        amountController.text = "";
+        selectedUnit = IngredientUnits.gram;
+      });
+
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill the fields correctly')),

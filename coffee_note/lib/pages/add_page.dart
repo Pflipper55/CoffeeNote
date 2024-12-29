@@ -72,10 +72,12 @@ class _AddPageState extends ConsumerState<AddPage> {
               ),
             ],
           ),
+          SizedBox(height: 20),
           SizedBox(
             height: 100,
             child: _buildIngredientListTile(state.ingredients)
           ),
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,     
             spacing: 8,   
