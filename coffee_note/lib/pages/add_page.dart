@@ -4,8 +4,10 @@ import 'package:coffee_note/misc/modals/ingredients/update_ingredient_modal.dart
 import 'package:coffee_note/misc/modals/recipe_steps/add_recipe_steps_modal.dart';
 import 'package:coffee_note/misc/modals/recipe_steps/remove_recipe_steps_modal.dart';
 import 'package:coffee_note/misc/modals/recipe_steps/update_recipe_steps_modal.dart';
+import 'package:coffee_note/misc/widgets/form_list_widget.dart';
 import 'package:coffee_note/models/ingredients/ingredient.dart';
 import 'package:coffee_note/models/ingredients/ingredient_units.dart';
+import 'package:coffee_note/models/misc/form_list_model.dart';
 import 'package:coffee_note/models/recipes/recipe_add_form_state.dart';
 import 'package:coffee_note/models/steps/recipe_step.dart';
 import 'package:coffee_note/providers/recipe_add_form_state_provider.dart';
@@ -24,6 +26,8 @@ class _AddPageState extends ConsumerState<AddPage> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
+  late FormListModel<Ingredient> formListIngredients;
+  late FormListModel<RecipeStep> formListSteps;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,25 @@ class _AddPageState extends ConsumerState<AddPage> {
     titleController.text = state.title;
     descriptionController.text = state.description;
 
+    formListSteps = FormListModel(
+      title: "Steps",
+      buildListTile: _buildStepListTile,
+      models: ref.watch(recipeIngredientNotifierProvider).steps,
+      addModal: AddRecipeStepsModal(ref: ref),
+      removeModal: RemoveRecipeStepModal(ref: ref),
+      addButtonText: "Add Steps",
+      removeButtonText: "Remove Steps",
+      canRemove: () => ref.watch(recipeIngredientNotifierProvider).steps.isNotEmpty,);
+    
+    formListIngredients = FormListModel(
+      title: "Steps",
+      buildListTile: _buildIngredientListTile,
+      models: ref.watch(recipeIngredientNotifierProvider).ingredients,
+      addModal: AddIngredientModal(ref: ref),
+      removeModal: RemoveIngredientModal(ref: ref),
+      addButtonText: "Add Ingredients",
+      removeButtonText: "Remove Ingredients",
+      canRemove: () => ref.watch(recipeIngredientNotifierProvider).steps.isNotEmpty);
 
     return _buildAddForm(state);
   }
@@ -66,119 +89,9 @@ class _AddPageState extends ConsumerState<AddPage> {
               ),
             ),
             SizedBox(height: 16),
-            Row(
-              children: [
-                Text(
-                  "Ingredients",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w300
-                  ),
-                ),
-              ],
-            ),
+            FormListWidget(model: formListIngredients),
             SizedBox(height: 16),
-            SizedBox(
-              height: 100,
-              child: _buildIngredientListTile(state.ingredients)
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,     
-              spacing: 8,   
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (context) => AddIngredientModal(ref: ref)
-                      );
-                    },
-                    icon: Icon(
-                      Icons.add
-                    ),
-                    label: Text("Add Ingredient"),
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: ElevatedButton.icon(
-                    onPressed: ref.watch(recipeIngredientNotifierProvider).ingredients.isNotEmpty 
-                    ? () async {
-                      await showDialog(
-                        context: context,
-                        builder: (context) => RemoveIngredientModal(ref: ref)
-                      );
-                    }
-                    : null,
-                    icon: Icon(
-                      Icons.delete_outlined
-                    ),
-                    label: Text(
-                      "Delete Ingredient",
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            Row(
-              children: [
-                Text(
-                  "Steps",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w300
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-                       SizedBox(
-              height: 100,
-              child: _buildStepListTile(state.steps)
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,     
-              spacing: 8,   
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (context) => AddRecipeStepsModal(ref: ref)
-                      );
-                    },
-                    icon: Icon(
-                      Icons.add
-                    ),
-                    label: Text("Add Step"),
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: ElevatedButton.icon(
-                    onPressed: ref.watch(recipeIngredientNotifierProvider).steps.isNotEmpty 
-                    ? () async {
-                      await showDialog(
-                        context: context,
-                        builder: (context) => RemoveRecipeStepModal(ref: ref)
-                      );
-                    }
-                    : null,
-                    icon: Icon(
-                      Icons.delete_outlined
-                    ),
-                    label: Text(
-                      "Delete Step",
-                    ),
-                  ),
-                ),
-              ],
-            )
+            FormListWidget(model: formListSteps)
           ],
         ),
       ),
@@ -240,4 +153,5 @@ class _AddPageState extends ConsumerState<AddPage> {
         );
       },
     );
+
 }
