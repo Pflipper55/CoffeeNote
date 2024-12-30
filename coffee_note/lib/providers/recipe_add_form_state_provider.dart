@@ -70,6 +70,10 @@ class RecipeAddFormStateProvider extends Notifier<RecipeAddFormState> {
     }
   }
 
+  void updateBrewTime(Duration newDuration){
+    state = state.copyWith(brewTime: newDuration);
+  }
+
   /// Gibt die nächste freie Ingredient-ID zurück.
   int getNextIngredientId() {
     return state.ingredients.isNotEmpty
@@ -77,7 +81,7 @@ class RecipeAddFormStateProvider extends Notifier<RecipeAddFormState> {
         : 1;
   }
 
-    int getNextStepId() {
+  int getNextStepId() {
     return state.steps.isNotEmpty
         ? state.steps.map((i) => i.id).reduce((a, b) => a > b ? a : b) + 1
         : 1;

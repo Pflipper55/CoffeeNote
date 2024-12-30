@@ -6,7 +6,7 @@ class RecipeAddFormState {
   String description;
   List<Ingredient> ingredients;
   List<RecipeStep> steps;
-  int brewTime;
+  Duration brewTime;
   double brewTemperature;
   String notes;
 
@@ -15,7 +15,7 @@ class RecipeAddFormState {
     this.description = '',
     this.ingredients = const [],
     this.steps = const [],
-    this.brewTime = 0,
+    this.brewTime = const Duration(),
     this.brewTemperature = 0.0,
     this.notes = '',
   });
@@ -25,7 +25,7 @@ class RecipeAddFormState {
     String? description,
     List<Ingredient>? ingredients,
     List<RecipeStep>? steps,
-    int? brewTime,
+    Duration? brewTime,
     double? brewTemperature,
     String? notes,
   }) {

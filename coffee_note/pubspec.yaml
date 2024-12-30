@@ -35,6 +35,7 @@ dependencies:
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
   const_date_time: ^1.1.0
+  duration_picker: ^1.2.0
 
 dev_dependencies:
   flutter_test:

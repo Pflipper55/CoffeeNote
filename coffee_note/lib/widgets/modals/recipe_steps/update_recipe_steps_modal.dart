@@ -65,10 +65,16 @@ class _EditRecipeStepState extends ConsumerState<EditRecipeStepModal> {
       content: SingleChildScrollView(
         child: Column(
           children: [
-            _buildTextField(
+            TextField(
               controller: descriptionController,
-              label: "Step description",
+              maxLines: 5,
+              maxLength: 120,
+              decoration: InputDecoration(
+                hintText: 'Description',
+                border: OutlineInputBorder(),
+              ),
             ),
+            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -82,18 +88,6 @@ class _EditRecipeStepState extends ConsumerState<EditRecipeStepModal> {
           child: const Text("Update Ingredient"),
         ),
       ],
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return TextField(
-      controller: controller,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(labelText: label),
     );
   }
 }

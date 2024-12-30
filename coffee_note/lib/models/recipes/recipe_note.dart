@@ -8,7 +8,7 @@ class RecipeNote {
   final String description;
   final List<Ingredient> ingredients;
   final List<RecipeStep> steps;
-  final DateTime brewTime;
+  final Duration brewTime;
   final double brewTemperature; // In Celcius
   final String notes;
   final DateTime createdAt;
@@ -20,7 +20,7 @@ class RecipeNote {
     this.description = '',
     this.ingredients = const [],
     this.steps = const [],
-    this.brewTime = const ConstDateTime(0),
+    this.brewTime = const Duration(),
     this.brewTemperature = 0.0,
     this.notes = '',
     required this.createdAt,
