@@ -2,6 +2,8 @@ import 'package:coffee_note/misc/modals/ingredients/add_ingredient_modal.dart';
 import 'package:coffee_note/misc/modals/ingredients/remove_ingredient_modal.dart';
 import 'package:coffee_note/misc/modals/ingredients/update_ingredient_modal.dart';
 import 'package:coffee_note/misc/modals/recipe_steps/add_recipe_steps_modal.dart';
+import 'package:coffee_note/misc/modals/recipe_steps/remove_recipe_steps_modal.dart';
+import 'package:coffee_note/misc/modals/recipe_steps/update_recipe_steps_modal.dart';
 import 'package:coffee_note/models/ingredients/ingredient.dart';
 import 'package:coffee_note/models/ingredients/ingredient_units.dart';
 import 'package:coffee_note/models/recipes/recipe_add_form_state.dart';
@@ -163,7 +165,7 @@ class _AddPageState extends ConsumerState<AddPage> {
                     ? () async {
                       await showDialog(
                         context: context,
-                        builder: (context) => RemoveIngredientModal(ref: ref)
+                        builder: (context) => RemoveRecipeStepModal(ref: ref)
                       );
                     }
                     : null,
@@ -227,7 +229,13 @@ class _AddPageState extends ConsumerState<AddPage> {
           },
           background: Container(color: Colors.red,),
           child: ListTile(
-            title: Text(item.description),     
+            title: Text(item.description),
+            onTap: () async {
+              await showDialog(
+                context: context,
+                builder: (context) => EditRecipeStepModal(ref: ref, step: item)
+              );
+            }, 
           )
         );
       },

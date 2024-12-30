@@ -43,7 +43,7 @@ class RecipeAddFormStateProvider extends Notifier<RecipeAddFormState> {
   void removeStep(RecipeStep step) {
     if(state.steps.contains(step)){
       state = state.copyWith(
-        steps: state.steps.where((i) => i.id == step.id).toList(),
+        steps: state.steps.where((i) => i.id != step.id).toList(),
       );
     }
   }
@@ -77,7 +77,15 @@ class RecipeAddFormStateProvider extends Notifier<RecipeAddFormState> {
         : 1;
   }
 
+    int getNextStepId() {
+    return state.steps.isNotEmpty
+        ? state.steps.map((i) => i.id).reduce((a, b) => a > b ? a : b) + 1
+        : 1;
+  }
+
   List<Ingredient> getIngredients() => state.ingredients;
+
+  List<RecipeStep> getSteps() => state.steps;
 
   /// Setzt den Zustand auf die ursprünglichen Werte zurück.
   void resetState() {

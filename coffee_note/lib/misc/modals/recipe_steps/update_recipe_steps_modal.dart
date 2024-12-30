@@ -1,61 +1,54 @@
 import 'package:coffee_note/models/ingredients/ingredient.dart';
 import 'package:coffee_note/models/ingredients/ingredient_units.dart';
+import 'package:coffee_note/models/steps/recipe_step.dart';
 import 'package:coffee_note/providers/recipe_add_form_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class EditIngredientModal extends ConsumerStatefulWidget {
+class EditRecipeStepModal extends ConsumerStatefulWidget {
   final WidgetRef ref;
-  final Ingredient ingredient;
+  final RecipeStep step;
 
-  const EditIngredientModal({
+  const EditRecipeStepModal({
     super.key,
-    required this.ingredient,
+    required this.step,
     required this.ref,
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _EditIngredientState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _EditRecipeStepState();
 }
 
-class _EditIngredientState extends ConsumerState<EditIngredientModal> {
-  late final TextEditingController nameController;
-  late final TextEditingController amountController;
-  late IngredientUnits selectedUnit;
+class _EditRecipeStepState extends ConsumerState<EditRecipeStepModal> {
+  late final TextEditingController descriptionController;
   late int id;
 
   @override
   void initState() {
     super.initState();
-    final ingredient = widget.ingredient;
-    id = ingredient.id;
-    selectedUnit = ingredient.unit;
-    nameController = TextEditingController(text: ingredient.name);
-    amountController = TextEditingController(text: ingredient.amount.toString());
+    final step = widget.step;
+    id = step.id;
+    descriptionController = TextEditingController(text: step.description);
   }
 
   @override
   void dispose() {
-    nameController.dispose();
-    amountController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
-  void _updateIngredient(BuildContext context) {
-    final name = nameController.text.trim();
-    final amount = double.tryParse(amountController.text.trim()) ?? 0;
+  void _updateStep(BuildContext context) {
+    final description = descriptionController.text.trim();
 
-    if (name.isNotEmpty && amount > 0) {
-      final updatedIngredient = Ingredient(
+    if (description.isNotEmpty) {
+      final updatedStep = RecipeStep(
         id: id,
-        name: name,
-        amount: amount,
-        unit: selectedUnit,
+        description: description,
       );
 
       widget.ref
           .read(recipeIngredientNotifierProvider.notifier)
-          .updateIngredient(updatedIngredient);
+          .updateStep(updatedStep);
 
       Navigator.pop(context); // Close modal
     } else {
@@ -68,22 +61,14 @@ class _EditIngredientState extends ConsumerState<EditIngredientModal> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Edit Ingredient"),
+      title: const Text("Edit Step"),
       content: SingleChildScrollView(
         child: Column(
           children: [
             _buildTextField(
-              controller: nameController,
-              label: "Ingredient Name",
+              controller: descriptionController,
+              label: "Step description",
             ),
-            const SizedBox(height: 16),
-            _buildTextField(
-              controller: amountController,
-              label: "Amount",
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 16),
-            _buildDropdown(),
           ],
         ),
       ),
@@ -93,7 +78,7 @@ class _EditIngredientState extends ConsumerState<EditIngredientModal> {
           child: const Text("Cancel"),
         ),
         ElevatedButton(
-          onPressed: () => _updateIngredient(context),
+          onPressed: () => _updateStep(context),
           child: const Text("Update Ingredient"),
         ),
       ],
@@ -109,27 +94,6 @@ class _EditIngredientState extends ConsumerState<EditIngredientModal> {
       controller: controller,
       keyboardType: keyboardType,
       decoration: InputDecoration(labelText: label),
-    );
-  }
-
-  Widget _buildDropdown() {
-    return Row(
-      children: [
-        DropdownButton<IngredientUnits>(
-          value: selectedUnit,
-          onChanged: (newUnit) {
-            if (newUnit != null) {
-              setState(() => selectedUnit = newUnit);
-            }
-          },
-          items: IngredientUnits.values.map((unit) {
-            return DropdownMenuItem<IngredientUnits>(
-              value: unit,
-              child: Text(unit.displayName),
-            );
-          }).toList(),
-        ),
-      ],
     );
   }
 }

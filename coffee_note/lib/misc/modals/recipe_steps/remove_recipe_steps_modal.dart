@@ -1,43 +1,44 @@
 import 'package:coffee_note/models/ingredients/ingredient.dart';
 import 'package:coffee_note/models/ingredients/ingredient_units.dart';
+import 'package:coffee_note/models/steps/recipe_step.dart';
 import 'package:coffee_note/providers/recipe_add_form_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RemoveIngredientModal extends ConsumerStatefulWidget {
+class RemoveRecipeStepModal extends ConsumerStatefulWidget {
   final WidgetRef ref;
 
-  const RemoveIngredientModal({
+  const RemoveRecipeStepModal({
     super.key,
     required this.ref,
   });
 
   @override
-  _RemoveIngredientModalState createState() => _RemoveIngredientModalState();
+  _RemoveRecipeStepModalState createState() => _RemoveRecipeStepModalState();
 }
 
-class _RemoveIngredientModalState extends ConsumerState<RemoveIngredientModal> {
-  List<Ingredient> ingredients = [];
-  Map<int,bool> selectedIngredients = {};
+class _RemoveRecipeStepModalState extends ConsumerState<RemoveRecipeStepModal> {
+  List<RecipeStep> steps = [];
+  Map<int,bool> selectedSteps = {};
   @override
   void initState() {
     super.initState();
-    ingredients = widget.ref.watch(recipeIngredientNotifierProvider.notifier).getIngredients();
-    selectedIngredients = {
-      for (var ingredient in ingredients) ingredient.id: false,
+    steps = widget.ref.read(recipeIngredientNotifierProvider.notifier).getSteps();
+    selectedSteps = {
+      for (var step in steps) step.id: false,
     };
   }
 
- void removeSelectedIngredients() {
-    final ingredientsToRemove = ingredients
-        .where((ingredient) => selectedIngredients[ingredient.id]!)
+ void removeSelectedSteps() {
+    final stepsToRemove = steps
+        .where((step) => selectedSteps[step.id]!)
         .toList();
 
-    for (var ingredient in ingredientsToRemove) 
+    for (var step in stepsToRemove) 
     {
       widget.ref
           .read(recipeIngredientNotifierProvider.notifier)
-          .removeIngredient(ingredient);
+          .removeStep(step);
     }
     Navigator.pop(context);
  }
@@ -45,18 +46,17 @@ class _RemoveIngredientModalState extends ConsumerState<RemoveIngredientModal> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Remove Ingredients"),
+      title: const Text("Remove Steps"),
       content: ListView.builder(
-        itemCount: ingredients.length,
+        itemCount: steps.length,
         itemBuilder: (context, index) {
-          final item = ingredients[index];
+          final item = steps[index];
           return CheckboxListTile(
-            title: Text(item.name),
-            subtitle: Text("${item.amount} ${item.unit.displayName}"),
-            value: selectedIngredients[item.id],
+            title: Text(item.description),
+            value: selectedSteps[item.id],
             onChanged: (value) {
               setState(() {
-                selectedIngredients[item.id] = value ?? false;
+                selectedSteps[item.id] = value ?? false;
               });
             },
           );
@@ -68,7 +68,7 @@ class _RemoveIngredientModalState extends ConsumerState<RemoveIngredientModal> {
           child: const Text("Cancel"),
         ),
         ElevatedButton(
-          onPressed: removeSelectedIngredients,
+          onPressed: removeSelectedSteps,
           child: const Text("Remove Selected"),
         ),
       ],
