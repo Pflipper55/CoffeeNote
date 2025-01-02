@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Coffee Notepad',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: getPrimaryColor())
+        colorScheme: ColorScheme.fromSeed(seedColor: getPrimaryColor()),
+        useMaterial3: true,
       ),
       home: DefaultTabController(
         length: 3,

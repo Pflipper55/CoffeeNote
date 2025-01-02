@@ -113,20 +113,23 @@ class _AddPageState extends ConsumerState<AddPage> {
                     Text("${ref.watch(recipeIngredientNotifierProvider).brewTime.inSeconds} s"),
                   ]
                 ),
-                FloatingActionButton(
-                  onPressed: () async {
-                    var resultingDuration = await showDurationPicker(
-                      baseUnit: BaseUnit.second,
-                      context: context,
-                      initialTime: Duration(seconds: 0)
-                    );
-                    setState(() {
-                      var oldValue = ref.read(recipeIngredientNotifierProvider).brewTime;
-                      ref.read(recipeIngredientNotifierProvider.notifier).updateBrewTime(resultingDuration ?? oldValue);
-                    });
-                  },
-                  tooltip: "Set brew time",
-                  child: Icon(Icons.punch_clock),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: FloatingActionButton(
+                    onPressed: () async {
+                      var resultingDuration = await showDurationPicker(
+                        baseUnit: BaseUnit.second,
+                        context: context,
+                        initialTime: Duration(seconds: 0)
+                      );
+                      setState(() {
+                        var oldValue = ref.read(recipeIngredientNotifierProvider).brewTime;
+                        ref.read(recipeIngredientNotifierProvider.notifier).updateBrewTime(resultingDuration ?? oldValue);
+                      });
+                    },
+                    tooltip: "Set brew time",
+                    child: Icon(Icons.punch_clock),
+                  ),
                 )
               ]
             ),
@@ -165,7 +168,43 @@ class _AddPageState extends ConsumerState<AddPage> {
                   ),
                 ),
               ]
-            )
+            ),
+            SizedBox(height: 16),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Brew temperature",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    Text(
+                      ref.watch(recipeIngredientNotifierProvider.notifier).getBrewTemperatureAsFixed(),
+                      style: TextStyle(
+                        fontSize: 16
+                      ),
+                    )
+                  ]
+                ),
+                Slider(
+                  max: 100,
+                  min: 0,
+                  divisions: (100 / 0.25).round(),
+                  value: ref.watch(recipeIngredientNotifierProvider).brewTemperature,
+                  onChanged: (value) {
+                    setState(() {
+                      final double newValue = (value / 0.25).round() * 0.25;
+                      ref.read(recipeIngredientNotifierProvider.notifier).updateBrewTemperature(newValue);
+                    });
+                  }
+                ),
+              ]
+            ),
           ],
         ),
       ),

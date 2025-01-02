@@ -79,6 +79,14 @@ class RecipeAddFormStateProvider extends Notifier<RecipeAddFormState> {
     state = state.copyWith(grindDegree: newGrindDegree);
   }
 
+  void updateBrewTemperature(double newTemperature) {
+    state = state.copyWith(brewTemperature: newTemperature);
+  }
+
+  String getBrewTemperatureAsFixed() {
+    return "${state.brewTemperature.toStringAsFixed(2)} °C";
+  }
+
   /// Gibt die nächste freie Ingredient-ID zurück.
   int getNextIngredientId() {
     return state.ingredients.isNotEmpty
