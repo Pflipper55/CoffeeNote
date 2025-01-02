@@ -1,6 +1,6 @@
 import 'package:coffee_note/models/ingredients/ingredient.dart';
+import 'package:coffee_note/models/recipes/grind_degree.dart';
 import 'package:coffee_note/models/steps/recipe_step.dart';
-import 'package:const_date_time/const_date_time.dart';
 
 class RecipeNote {
   final int id;
@@ -9,6 +9,7 @@ class RecipeNote {
   final List<Ingredient> ingredients;
   final List<RecipeStep> steps;
   final Duration brewTime;
+  final GrindDegree grindDegree;
   final double brewTemperature; // In Celcius
   final String notes;
   final DateTime createdAt;
@@ -21,6 +22,7 @@ class RecipeNote {
     this.ingredients = const [],
     this.steps = const [],
     this.brewTime = const Duration(),
+    this.grindDegree = GrindDegree.medium,
     this.brewTemperature = 0.0,
     this.notes = '',
     required this.createdAt,

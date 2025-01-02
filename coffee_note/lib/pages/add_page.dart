@@ -1,3 +1,5 @@
+import 'package:coffee_note/helpers/color_helper.dart';
+import 'package:coffee_note/models/recipes/grind_degree.dart';
 import 'package:coffee_note/widgets/modals/ingredients/add_ingredient_modal.dart';
 import 'package:coffee_note/widgets/modals/ingredients/remove_ingredient_modal.dart';
 import 'package:coffee_note/widgets/modals/ingredients/update_ingredient_modal.dart';
@@ -108,7 +110,7 @@ class _AddPageState extends ConsumerState<AddPage> {
                         fontWeight: FontWeight.w300,
                       ),
                     ),
-                    Text("${ref.watch(recipeIngredientNotifierProvider).brewTime}"),
+                    Text("${ref.watch(recipeIngredientNotifierProvider).brewTime.inSeconds} s"),
                   ]
                 ),
                 FloatingActionButton(
@@ -126,7 +128,42 @@ class _AddPageState extends ConsumerState<AddPage> {
                   tooltip: "Set brew time",
                   child: Icon(Icons.punch_clock),
                 )
- 
+              ]
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Grind degree",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: DropdownButton<GrindDegree>(
+                    value: ref.watch(recipeIngredientNotifierProvider).grindDegree,
+                    borderRadius: BorderRadius.circular(12),
+                    items: GrindDegree.values.map((grind) {
+                      return DropdownMenuItem<GrindDegree>(
+                        value: grind,
+                        child: Text(grind.displayName),
+                      );
+                    }).toList(),
+                    onChanged: (GrindDegree? newValue) {
+                      if (newValue != null) {
+                        ref.read(recipeIngredientNotifierProvider.notifier).updateGrindDegree(newValue);
+                      }
+                    },
+                    dropdownColor: getSecondaryColor(),
+                    underline: Container(
+                      height: 2,
+                      color: getPrimaryColor(),
+                    ),
+                    style: TextStyle(color: getPrimaryColor()),
+                  ),
+                ),
               ]
             )
           ],

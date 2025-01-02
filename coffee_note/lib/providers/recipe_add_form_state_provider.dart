@@ -1,4 +1,5 @@
 import 'package:coffee_note/models/ingredients/ingredient.dart';
+import 'package:coffee_note/models/recipes/grind_degree.dart';
 import 'package:coffee_note/models/recipes/recipe_add_form_state.dart';
 import 'package:coffee_note/models/steps/recipe_step.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -72,6 +73,10 @@ class RecipeAddFormStateProvider extends Notifier<RecipeAddFormState> {
 
   void updateBrewTime(Duration newDuration){
     state = state.copyWith(brewTime: newDuration);
+  }
+
+  void updateGrindDegree(GrindDegree newGrindDegree) {
+    state = state.copyWith(grindDegree: newGrindDegree);
   }
 
   /// Gibt die nächste freie Ingredient-ID zurück.
