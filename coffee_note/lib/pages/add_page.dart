@@ -28,6 +28,7 @@ class _AddPageState extends ConsumerState<AddPage> {
 
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _notesController = TextEditingController();
 
   late FormListModel<Ingredient> _formListIngredients;
   late FormListModel<RecipeStep> _formListSteps;
@@ -37,6 +38,8 @@ class _AddPageState extends ConsumerState<AddPage> {
     state = ref.watch(recipeIngredientNotifierProvider);
     _titleController.text = state.title;
     _descriptionController.text = state.description;
+    _notesController.text = state.notes;
+
     Duration _brewTime = state.brewTime;
 
     _formListSteps = FormListModel(
@@ -204,6 +207,19 @@ class _AddPageState extends ConsumerState<AddPage> {
                   }
                 ),
               ]
+            ),
+            SizedBox(height: 16),
+            TextFormField(
+              controller: _descriptionController,
+              onChanged: (value) {
+                ref.watch(recipeIngredientNotifierProvider.notifier).updateDescription(_descriptionController.text);
+              },
+              maxLines: 10,
+              maxLength: 240,
+              decoration: InputDecoration(
+                hintText: 'Notes',
+                border: OutlineInputBorder(),
+              ),
             ),
           ],
         ),
