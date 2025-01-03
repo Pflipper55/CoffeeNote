@@ -18,24 +18,14 @@ class RemoveRecipeStepModal extends ConsumerStatefulWidget {
 }
 
 class _RemoveRecipeStepModalState extends ConsumerState<RemoveRecipeStepModal> {
-  List<RecipeStep> steps = [];
-  Map<int,bool> selectedSteps = {};
-  @override
-  void initState() {
-    super.initState();
-    steps = widget.ref.read(recipeIngredientNotifierProvider.notifier).getSteps();
-    selectedSteps = {
-      for (var step in steps) step.id: false,
-    };
-  }
-
- void removeSelectedSteps() {
-    final stepsToRemove = steps
+ void removeSelectedSteps(Map<int,bool> selectedSteps) {
+    final stepsToRemove = widget.ref.watch(recipeIngredientNotifierProvider).steps
         .where((step) => selectedSteps[step.id]!)
         .toList();
 
     for (var step in stepsToRemove) 
     {
+      // ToDo remove with database
       widget.ref
           .read(recipeIngredientNotifierProvider.notifier)
           .removeStep(step);
@@ -45,6 +35,10 @@ class _RemoveRecipeStepModalState extends ConsumerState<RemoveRecipeStepModal> {
 
   @override
   Widget build(BuildContext context) {
+    final steps = widget.ref.watch(recipeIngredientNotifierProvider).steps;
+    final selectedSteps = {
+      for (var step in steps) step.id: false,
+    };
     return AlertDialog(
       title: const Text("Remove Steps"),
       content: ListView.builder(
@@ -68,7 +62,7 @@ class _RemoveRecipeStepModalState extends ConsumerState<RemoveRecipeStepModal> {
           child: const Text("Cancel"),
         ),
         ElevatedButton(
-          onPressed: removeSelectedSteps,
+          onPressed: () => removeSelectedSteps(selectedSteps),
           child: const Text("Remove Selected"),
         ),
       ],

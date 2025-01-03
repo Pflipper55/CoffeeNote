@@ -25,7 +25,6 @@ class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
   @override
   void initState() {
     super.initState();
-    id = widget.ref.read(recipeIngredientNotifierProvider.notifier).getNextIngredientId();
     nameController = TextEditingController();
     amountController = TextEditingController();
     selectedUnit = IngredientUnits.gram;
@@ -44,7 +43,7 @@ class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
 
     if (name.isNotEmpty && amount > 0) {
       final newIngredient = Ingredient(
-        id: id,
+        id: id <= 0 ? 1 : id,
         name: name,
         amount: amount,
         unit: selectedUnit,
@@ -55,7 +54,7 @@ class _AddIngredientModalState extends ConsumerState<AddIngredientModal> {
           .addIngredient(newIngredient);
 
       setState(() {
-        id = widget.ref.read(recipeIngredientNotifierProvider.notifier).getNextIngredientId();
+        id = widget.ref.read(recipeIngredientNotifierProvider).ingredients.length +1;
         nameController.text = "";
         amountController.text = "";
         selectedUnit = IngredientUnits.gram;

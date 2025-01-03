@@ -5,9 +5,9 @@ class FormListWidget<T> extends StatefulWidget {
   final FormListModel<T> model;
 
   const FormListWidget({
-    Key? key,
+    super.key,
     required this.model,
-  }) : super(key: key);
+  });
 
   @override
   _FormListWidgetState<T> createState() => _FormListWidgetState<T>();
@@ -41,7 +41,7 @@ class _FormListWidgetState<T> extends State<FormListWidget<T>> {
         SizedBox(height: 20),
         SizedBox(
           height: 100,
-          child: widget.model.buildListTile(models),
+          child: widget.model.buildListTile(),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,

@@ -7,7 +7,7 @@ class FormListModel<T> {
   final Widget removeModal;
   final String addButtonText;
   final String removeButtonText;
-  final Widget Function(List<T>) buildListTile;
+  final Widget Function() buildListTile;
   final bool Function() canRemove;
 
   FormListModel({

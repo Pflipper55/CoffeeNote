@@ -18,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddPage extends ConsumerStatefulWidget {
+  const AddPage({super.key});
+
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddPageState();
 }
@@ -40,7 +42,6 @@ class _AddPageState extends ConsumerState<AddPage> {
     _descriptionController.text = state.description;
     _notesController.text = state.notes;
 
-    Duration _brewTime = state.brewTime;
 
     _formListSteps = FormListModel(
       title: "Steps",
@@ -187,7 +188,7 @@ class _AddPageState extends ConsumerState<AddPage> {
                       ),
                     ),
                     Text(
-                      ref.watch(recipeIngredientNotifierProvider.notifier).getBrewTemperatureAsFixed(),
+                      ref.watch(recipeIngredientNotifierProvider).brewTemperature.toStringAsFixed(2),
                       style: TextStyle(
                         fontSize: 16
                       ),
@@ -227,7 +228,8 @@ class _AddPageState extends ConsumerState<AddPage> {
     )
   );
   
-  Widget _buildIngredientListTile(List<Ingredient> ingredients) {
+  Widget _buildIngredientListTile() {
+    final ingredients = ref.watch(recipeIngredientNotifierProvider).ingredients;
     return ListView.builder(
       key: UniqueKey(),
       itemCount: ingredients.length,
@@ -256,8 +258,9 @@ class _AddPageState extends ConsumerState<AddPage> {
     );
   }
 
-  Widget _buildStepListTile(List<RecipeStep> steps)
-    => ListView.builder(
+  Widget _buildStepListTile() {
+    final steps = ref.watch(recipeIngredientNotifierProvider).steps;
+    return ListView.builder(
       key: UniqueKey(),
       itemCount: steps.length,
       itemBuilder: (context, index) {
@@ -282,5 +285,6 @@ class _AddPageState extends ConsumerState<AddPage> {
         );
       },
     );
+  }
 
 }

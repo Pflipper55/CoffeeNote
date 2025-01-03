@@ -17,24 +17,15 @@ class RemoveIngredientModal extends ConsumerStatefulWidget {
 }
 
 class _RemoveIngredientModalState extends ConsumerState<RemoveIngredientModal> {
-  List<Ingredient> ingredients = [];
-  Map<int,bool> selectedIngredients = {};
-  @override
-  void initState() {
-    super.initState();
-    ingredients = widget.ref.watch(recipeIngredientNotifierProvider.notifier).getIngredients();
-    selectedIngredients = {
-      for (var ingredient in ingredients) ingredient.id: false,
-    };
-  }
 
- void removeSelectedIngredients() {
-    final ingredientsToRemove = ingredients
+ void removeSelectedIngredients(Map<int, bool> selectedIngredients) {
+    final ingredientsToRemove = widget.ref.watch(recipeIngredientNotifierProvider).ingredients
         .where((ingredient) => selectedIngredients[ingredient.id]!)
         .toList();
 
     for (var ingredient in ingredientsToRemove) 
     {
+      // ToDo Remove with database
       widget.ref
           .read(recipeIngredientNotifierProvider.notifier)
           .removeIngredient(ingredient);
@@ -44,6 +35,10 @@ class _RemoveIngredientModalState extends ConsumerState<RemoveIngredientModal> {
 
   @override
   Widget build(BuildContext context) {
+    final ingredients = widget.ref.watch(recipeIngredientNotifierProvider).ingredients;
+    final selectedIngredients = {
+      for (var ingredient in ingredients) ingredient.id: false,
+    };
     return AlertDialog(
       title: const Text("Remove Ingredients"),
       content: ListView.builder(
@@ -68,7 +63,7 @@ class _RemoveIngredientModalState extends ConsumerState<RemoveIngredientModal> {
           child: const Text("Cancel"),
         ),
         ElevatedButton(
-          onPressed: removeSelectedIngredients,
+          onPressed: () => removeSelectedIngredients(selectedIngredients),
           child: const Text("Remove Selected"),
         ),
       ],
